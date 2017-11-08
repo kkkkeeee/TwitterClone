@@ -1,5 +1,20 @@
 language: elixir
 
+matrix:
+  include:
+    - os: linux
+      otp_release: 19.0
+    - os: linux
+      otp_release: 19.1
+    - os: linux
+      otp_release: 19.2
+    - os: linux
+      otp_release: 19.3
+    - os: linux
+      otp_release: 20.0
+    - os: linux
+      otp_release: 20.1
+
 elixir:
   - 1.5.1
 
@@ -10,6 +25,14 @@ services:
   - postgresql
 
 before_script:
+  - sudo apt-get install postgresql postgresql-contrib
+  - sudo -u postgres createdb phoenix_twitter_dev
+  - sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+  - sudo apt-get install build-essential checkinstall
+  - sudo apt-get install libssl-dev
+  - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+  - source ~/.bashrc
+  - nvm install 8.9
   - mix deps.get
   - mix do ecto.create, ecto.migrate
   - npm install
