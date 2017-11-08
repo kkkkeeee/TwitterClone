@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-lg-4">
+    <%= render App.SharedView, "user_info.html", conn: @conn, user: @user, active: "following" %>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="area"><h4><%= gettext "Following" %></h4></div>
+    <%= for f <- @following do %>
+      <%= render App.SharedView, "user_item.html", conn: @conn, user: f.user %>
+    <% end %>
+  </div>
+</div>

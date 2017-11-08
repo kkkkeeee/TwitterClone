@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Phoenix-Twitter</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="<%= page_path(@conn, :index) %>">Phoenix-Twitter</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= gettext "Language" %> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="<%= if current_locale(@conn) == "en" do "disabled" end %>"><a href="<%= locale_path(@conn, :new, "en") %>">English</a></li>
+                <li class="<%= if current_locale(@conn) == "sv" do "disabled" end %>"><a href="<%= locale_path(@conn, :new, "sv") %>">Swedish</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="<%= user_path(@conn, :index) %>"><%= gettext "Users" %></a></li>
+            <li><a href="<%= tweet_path(@conn, :index) %>"><%= gettext "Tweets" %></a></li>
+            <%= if current_user(@conn) do %>
+              <li><a href="<%= user_path(@conn, :show, current_user(@conn).id) %>"><%= gettext "Profile" %></a></li>
+              <li><a href="<%= user_path(@conn, :edit, current_user(@conn).id) %>"><%= gettext "Settings" %></a></li>
+              <li><a href="<%= logout_path(@conn, :index) %>"><%= gettext "Logout" %></a></li>
+            <% else %>
+              <li><a href="<%= signup_path(@conn, :index) %>"><%= gettext "Signup" %></a></li>
+              <li><a href="<%= login_path(@conn, :index) %>"><%= gettext "Login" %></a></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= if assigns[:changeset] && @changeset.action do %>
+        <div class="alert alert-danger">
+          <p><%= gettext "Oops, something went wrong! Please check the errors below." %></p>
+        </div>
+      <% end %>
+
+      <main role="main">
+        <%= render @view_module, @view_template, assigns %>
+      </main>
+    </div>
+
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script>
+      window.onload = function() {
+        require("web/static/js/app").App.run();
+      }
+    </script>
+  </body>
+</html>
