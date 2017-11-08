@@ -21,23 +21,24 @@ functionality in Ecto. The CSS is done with [SASS](http://sass-lang.com/) and
 [bootstrap-sass](https://github.com/twbs/bootstrap-sass) with the addition of
 [Font Awesome](http://fontawesome.io/).
 
-# How-to
-
+# Installation
 From the phoenix-twitter root directory, execute the following:
-
-    $ mix deps.get
-    $ mix ecto.create
-    $ mix ecto.migrate
-    $ npm install
-    $ mix phoenix.server
-
+```
+sudo apt-get install postgresql postgresql-contrib
+sudo -u postgres createdb phoenix_twitter_dev
+sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+sudo apt-get install build-essential checkinstall
+sudo apt-get install libssl-dev
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+source ~/.bashrc
+nvm install 8.9
+mix deps.get
+mix ecto.create
+mix ecto.migrate
+npm install
+mix phoenix.server
+```
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-## Problems
-
-I am unable to properly include session management and assign variables to the
-connection in the test environment, this means that I could not write the
-tests I wanted.
 
 # License
 
