@@ -1,0 +1,18 @@
+language: elixir
+
+elixir:
+  - 1.5.1
+
+addons:
+  postgresql: '9.3.19'
+
+services:
+  - postgresql
+
+before_script:
+  - mix deps.get
+  - mix do ecto.create, ecto.migrate
+  - npm install
+
+script:
+  - mix phoenix.server
