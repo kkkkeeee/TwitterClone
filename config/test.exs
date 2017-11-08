@@ -15,5 +15,5 @@ config :app, App.Repo,
   username: "postgres",
   password: "postgres",
   database: "phoenix_twitter_test",
-  hostname: "172.17.0.2",
+  hostname: "127.0.0.1",
   pool: Ecto.Adapters.SQL.Sandbox
