@@ -1,4 +1,4 @@
-![phoenix-twitter](https://github.com/mharrys/phoenix-twitter/raw/master/scrot.png)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Build Status](https://travis-ci.com/BestSonny/TwitterClone.svg?token=vpYCDh8iPb2D3tqooPvo&branch=master)](https://travis-ci.com/BestSonny/TwitterClone)
 
 # Phoenix-Twitter
 
