@@ -5,8 +5,8 @@ export var App = {
     // display user mentions and hashtags as links
     var mentionPattern = /\B@(\w+)/;
     var tagPattern = /\S*#(?:\[[^\]]+\]|[a-zA-Z0-9]+)/;
-    Array.forEach(document.getElementsByClassName("text"), function(elem) {
-      elem.innerHTML = Array.map(elem.innerText.split(" "), function(word) {
+    Array.prototype.forEach.call(document.getElementsByClassName("text"), function(elem) {
+      elem.innerHTML = Array.prototype.map.call(elem.innerText.split(" "), function(word) {
         var mentionMatch = mentionPattern.exec(word);
         var tagMatch = tagPattern.exec(word);
         if (mentionMatch) {
