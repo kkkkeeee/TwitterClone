@@ -10,6 +10,11 @@
         <%= render App.TweetView, "form.html", changeset: @changeset, action: user_tweet_path(@conn, :create, @user.id) %>
       </div>
     <% end %>
+    <!added by keke to show the tweets posted by the user this current user is following>
+    <%= for tweet <- @tweets do %>
+      <%= render App.SharedView, "tweet_item.html", conn: @conn, user: @user, tweet: tweet %>
+    <% end %>
+    
     <%= for tweet <- @user.tweets do %>
       <%= render App.SharedView, "tweet_item.html", conn: @conn, user: @user, tweet: tweet %>
     <% end %>
