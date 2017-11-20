@@ -21,12 +21,6 @@ defmodule App.UserController do
     user = conn.assigns[:user]
     changeset = Tweet.changeset %Tweet{}
     #added by keke to show the tweet posted by the user this current user is following
-    #tweets = 
-    #       Tweet |> join(:inner, [t], f in Follower, f.follower_id == ^user.id and t.user_id == f.user_id)             
-    #tweets = Repo.all(tweets) |> Repo.preload(:user)
-    #select * from(
-    #  select * from tweets t where t.user_id = $1
-    #  union
     query = """ 
           select * from
           (select t.* from tweets t, followers f
@@ -44,12 +38,6 @@ defmodule App.UserController do
       struct(App.Tweet, Enum.zip(cols, row)) # c
     end
     tweets = tweets |> Repo.preload(:user)
-    #tweets = Tweet.changeset(%Tweet{}, tweets)
-    #IO.puts(", tweets: #{inspect tweets}")
-    #query = Tweet|> join(:inner, [t], u in User, (u.id == ^user.id or u.id == (from f in Follower, where f.follower_id == ^user.id, select f.user_id)) 
-    #          and t.user_id == u.id) 
-    #tweets = Repo.all(query)
-    #end added by keke
 
     render conn, "show.html", user: user, changeset: changeset, tweets: tweets #added by keke
   end
