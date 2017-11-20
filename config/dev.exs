@@ -40,5 +40,4 @@ config :app, App.Repo,
   password: "postgres",
   database: "phoenix_twitter_dev",
   hostname: "127.0.0.1",
-  pool_size: 10,
-  port: 8000
+  pool_size: 10
