@@ -7,7 +7,6 @@ defmodule App.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug App.Locale
   end
 
   scope "/", App do
@@ -44,7 +43,5 @@ defmodule App.Router do
     end
 
     get "/hashtag/:name", TagController, :show
-
-    get "/locale/:locale", LocaleController, :new
   end
 end
