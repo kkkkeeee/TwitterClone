@@ -25,19 +25,23 @@ defmodule App.UserController do
     #added by keke to show the tweet posted by the user this current user is following
     query = """ 
     select distinct * from(
-      SELECT t0.*, null as current_user_favorite_id, r2.id as current_user_retweet_id
+      SELECT t0.*, null as current_user_favorite_id, r2.id as current_user_retweet_id 
         FROM tweets AS t0 
-        LEFT OUTER JOIN retweets AS r2
-        ON (r2.user_id in (select fw.user_id from followers fw where fw.follower_id=$1)) AND (r2.tweet_id = t0.id)
+        left outer JOIN retweets AS r2
+        ON (r2.tweet_id = t0.id)
         where t0.id not in (
         select fa.tweet_id from favorites fa where fa.user_id = $1 
         union
-        select re.tweet_id from retweets re where re.user_id = $1)
+        select re.tweet_id from retweets re where re.user_id = $1) 
+        and (t0.user_id in (select fw.user_id from followers fw where fw.follower_id = $1)
+        or r2.user_id in (select fw.user_id from followers fw where fw.follower_id = $1))
       Union
-      SELECT t0.*, f1.id as current_user_favorite_id, r2.id as current_user_retweet_id
-        FROM tweets AS t0 LEFT OUTER JOIN favorites AS f1
+      SELECT t0.*, f1.id as current_user_favorite_id, r2.id as current_user_retweet_id 
+        FROM tweets 
+        AS t0 LEFT OUTER JOIN favorites AS f1
         ON (f1.user_id = $1) AND (f1.tweet_id = t0.id) LEFT OUTER JOIN retweets AS r2
-        ON (r2.user_id = $1) AND (r2.tweet_id = t0.id) ) m
+        ON (r2.user_id = $1) AND (r2.tweet_id = t0.id) 
+        where t0.user_id = $1 or f1.user_id = $1 or r2.user_id = $1) m  
       order by m.inserted_at desc
       limit $2
     """
