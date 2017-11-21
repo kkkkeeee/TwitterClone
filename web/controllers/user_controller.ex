@@ -7,7 +7,9 @@ defmodule App.UserController do
   alias App.Follower
 
   import Ecto.Changeset
-  @num_tweets 5
+  
+  @num_tweets 10
+
 
   plug App.LoginRequired when action in [:edit, :update]
   plug App.SetUser when action in [:show]
@@ -22,16 +24,26 @@ defmodule App.UserController do
     changeset = Tweet.changeset %Tweet{}
     #added by keke to show the tweet posted by the user this current user is following
     query = """ 
-          select * from
-          (select t.* from tweets t, followers f
-          where f.follower_id = $1 and t.user_id = f.user_id 
-          and t.inserted_at > (select max(t2.inserted_at) 
-                               from tweets t2
-                               where t2.user_id = $1)
-          order by t.inserted_at desc) s
-          limit $2
+    select distinct * from(
+      SELECT t0.*, null as current_user_favorite_id, r2.id as current_user_retweet_id
+        FROM tweets AS t0 
+        LEFT OUTER JOIN retweets AS r2
+        ON (r2.user_id in (select fw.user_id from followers fw where fw.follower_id=$1)) AND (r2.tweet_id = t0.id)
+        where t0.id not in (
+        select fa.tweet_id from favorites fa where fa.user_id = $1 
+        union
+        select re.tweet_id from retweets re where re.user_id = $1)
+      Union
+      SELECT t0.*, f1.id as current_user_favorite_id, r2.id as current_user_retweet_id
+        FROM tweets AS t0 LEFT OUTER JOIN favorites AS f1
+        ON (f1.user_id = $1) AND (f1.tweet_id = t0.id) LEFT OUTER JOIN retweets AS r2
+        ON (r2.user_id = $1) AND (r2.tweet_id = t0.id) ) m
+      order by m.inserted_at desc
+      limit $2
     """
     res = Ecto.Adapters.SQL.query!(App.Repo, query, [user.id, @num_tweets])
+    #IO.puts(", res: #{inspect res}")
+
     cols = Enum.map res.columns, &(String.to_atom(&1)) # b
     
     tweets = Enum.map res.rows, fn(row) ->
