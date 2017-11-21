@@ -21,7 +21,6 @@ defmodule App.UserController do
     user = conn.assigns[:user]
     changeset = Tweet.changeset %Tweet{}
     #added by keke to show the tweet posted by the user this current user is following
-    
     query = """ 
     select distinct * from(
       SELECT t0.*, null as current_user_favorite_id, r2.id as current_user_retweet_id
@@ -49,7 +48,7 @@ defmodule App.UserController do
     end
     tweets = tweets |> Repo.preload(:user)
     #tweets = Tweet.changeset(%Tweet{}, tweets)
-    IO.puts(", tweets: #{inspect tweets}")
+    #IO.puts(", tweets: #{inspect tweets}")
 
     render conn, "show.html", user: user, changeset: changeset, tweets: tweets #added by keke
   end
