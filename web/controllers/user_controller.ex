@@ -7,8 +7,9 @@ defmodule App.UserController do
   alias App.Follower
 
   import Ecto.Changeset
-
+  
   @num_tweets 10
+
 
   plug App.LoginRequired when action in [:edit, :update]
   plug App.SetUser when action in [:show]
@@ -41,6 +42,7 @@ defmodule App.UserController do
       limit $2
     """
     res = Ecto.Adapters.SQL.query!(App.Repo, query, [user.id, @num_tweets])
+    #IO.puts(", res: #{inspect res}")
 
     cols = Enum.map res.columns, &(String.to_atom(&1)) # b
     
