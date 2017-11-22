@@ -23,6 +23,8 @@ defmodule App.Router do
 
     get "/logout", LogoutController, :index
 
+    post "/search", SearchController, :index
+
     resources "/users", UserController, only: [:index, :show, :edit, :update] do
       resources "/tweets", TweetController, only: [:create]
 
@@ -34,7 +36,7 @@ defmodule App.Router do
       delete "/follow", FollowerController, :delete
     end
 
-    resources "/tweets", TweetController, only: [:index, :delete] do
+    resources "/tweets", TweetController, only: [:index, :show, :delete] do
       post   "/favorite", FavoriteController, :create
       delete "/favorite", FavoriteController, :delete
 

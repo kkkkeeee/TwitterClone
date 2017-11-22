@@ -25,6 +25,12 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
+
+            <li><a><%= form_for @conn, search_path(@conn, :index), [name: :search], fn f -> %>
+                <%= text_input f, :query, value: "search"%>
+                <%= submit "Go" %>
+              <% end %></a></li>
+
             <li><a href="<%= user_path(@conn, :index) %>"><%= gettext "Users" %></a></li>
             <li><a href="<%= tweet_path(@conn, :index) %>"><%= gettext "Tweets" %></a></li>
             <%= if current_user(@conn) do %>
