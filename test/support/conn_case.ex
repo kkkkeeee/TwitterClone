@@ -19,7 +19,6 @@ defmodule App.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-
       alias App.Repo
       import Ecto
       import Ecto.Changeset
@@ -29,6 +28,8 @@ defmodule App.ConnCase do
 
       # The default endpoint for testing
       @endpoint App.Endpoint
+
+
     end
   end
 

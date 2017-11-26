@@ -26,10 +26,11 @@ defmodule App.TwitterControllerTest do
 
   test "can login in", %{conn: conn} do
     conn = build_conn()
-    users = Enum.map(1..200, fn x -> create(:user, no: x) end)
+    users = Enum.map(1..2, fn x -> create(:user, no: x) end)
     Enum.map(users, fn x ->  Repo.insert! x end)
     Enum.map(users, fn x ->  login = %{login: %{login: x.login, password: x.password}}
                              assert post(conn, login_path(conn, :create), login).status == 302
                             end)
   end
+  
 end

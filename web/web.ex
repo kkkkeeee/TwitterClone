@@ -23,6 +23,9 @@ defmodule App.Web do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+
+      import App.Router.Helpers
+      import App.Gettext
     end
   end
 
