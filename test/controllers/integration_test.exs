@@ -34,14 +34,11 @@ defmodule MyApp.AboutIntegrationTest do
     # get the root index page
     get( conn, page_path(conn, :index) )
     |> follow_link( "Signup" )
-    |> IO.inspect
     |> follow_form(%{ user: %{
     user_login: "user@example.com",
     user_password: "test.password",
     user_password_confirmation: "test.password",
     user_login: "New User"}}, {%{identifier: "#upload_form"}})
-
-    |> IO.inspect
     #assert create_conn.status == 200
   end
 
