@@ -39,7 +39,8 @@ defmodule App.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 1.6"},
-     {:plug, "~> 1.3"}]
+     {:plug, "~> 1.3"},
+     {:phoenix_integration, "~> 0.3", only: :test}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
