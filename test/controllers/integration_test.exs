@@ -32,14 +32,14 @@ defmodule MyApp.AboutIntegrationTest do
 
   test "Create new user", %{conn: conn} do
     # get the root index page
-    get( conn, page_path(conn, :index) )
+    create_conn = get( conn, page_path(conn, :index) )
     |> follow_link( "Signup" )
     |> follow_form(%{ user: %{
-    user_login: "user@example.com",
-    user_password: "test.password",
-    user_password_confirmation: "test.password",
-    user_login: "New User"}}, {%{identifier: "#upload_form"}})
-    #assert create_conn.status == 200
+    login: "user@example.com",
+    password: "test.password",
+    password_confirmation: "test.password",
+    name: "New User"}}, %{identifier: "#signup_new_user"})
+    assert create_conn.status == 200
   end
 
 end
