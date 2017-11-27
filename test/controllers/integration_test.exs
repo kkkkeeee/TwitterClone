@@ -7,7 +7,6 @@ defmodule App.IntegrationTest do
   import App.Factory
 
   setup do
-    #Ecto.Adapters.SQL.Sandbox.checkout(App.Repo)
     conn = build_conn()
     {:ok, conn: conn}
   end
@@ -64,8 +63,6 @@ defmodule App.IntegrationTest do
     name: "xxx"}}, %{identifier: "#signup_new_user"})
     assert create_conn.status == 200
 
-    all_users = Repo.all User |> order_by([u], [asc: u.id])
-
     #loginin
     login_conn = get( conn, page_path(conn, :index) )
     |> follow_link("Login")
@@ -97,10 +94,12 @@ defmodule App.IntegrationTest do
       text: "hello"}}, %{identifier: "#send_tweets"})
     end
 
-    all_tweets = Repo.all Tweet
-    IO.inspect all_tweets
-    
     conns = Enum.map(users, &get_request.(&1))
+
+    query = Tweet |> order_by([t], [desc: t.id])
+    tweets = Repo.all(query)
+    min_tweet_id = Repo.aggregate(Tweet, :min, :id)
+    max_tweet_id = Repo.aggregate(Tweet, :max, :id)
 
     users_conns = Enum.map(conns, fn x ->
     x |> follow_link( "Users" )
@@ -109,13 +108,14 @@ defmodule App.IntegrationTest do
     #follow users
     Enum.map(users_conns, fn x ->
     x = x |> follow_link( "/users/#{min_id}")
-    post(x, user_follower_path(x, :create, min_id))
+    post(x, user_follower_path(x, :create, min_tweet_id))
     |> follow_redirect()
     end)
 
     tweets_conns = Enum.map(conns, fn x ->
     x |> follow_link( "Tweets" )
-    post(x, tweet_favorite_path(x, :create, min_id))
+    post(x, tweet_favorite_path(x, :create, min_tweet_id))
+    |> follow_redirect()
     end)
 
 
