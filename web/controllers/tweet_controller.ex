@@ -36,7 +36,7 @@ defmodule App.TweetController do
     current_user = conn.assigns[:current_user]
     user = conn.assigns[:user]
     if user.id === current_user.id do
-      {state, value } = Repo.transaction fn ->
+      {state, _} = Repo.transaction fn ->
         tweet_changeset = Tweet.changeset %Tweet{user_id: current_user.id}, tweet_params
         case Repo.insert tweet_changeset do
           {:ok, tweet} ->

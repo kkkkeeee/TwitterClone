@@ -2,7 +2,6 @@ defmodule App.UserController do
   use App.Web, :controller
 
   alias App.Tweet
-  alias App.Retweet
   alias App.User
   alias App.Follower
 
