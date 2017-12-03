@@ -11,6 +11,15 @@ defmodule App.TwitterControllerTest do
 
   import App.Factory
 
+  def print_multiple_times(msg, n) when n <= 1 do
+    IO.puts msg
+  end
+
+  def print_multiple_times(msg, n) do
+    IO.puts msg
+    print_multiple_times(msg, n - 1)
+  end
+  
   test "can signup", %{conn: conn} do
     user = %{user: %{
       login: "login",
@@ -32,5 +41,5 @@ defmodule App.TwitterControllerTest do
                              assert post(conn, login_path(conn, :create), login).status == 302
                             end)
   end
-  
+
 end
