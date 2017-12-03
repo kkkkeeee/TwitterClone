@@ -21,4 +21,5 @@ config :app, App.Repo,
   database: "phoenix_twitter_test",
   hostname: "127.0.0.1",
   pool: Ecto.Adapters.SQL.Sandbox,
+  port: 8000,
   ownership_timeout: 600_000
