@@ -9,6 +9,12 @@ defmodule App.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :api do
+    plug :accepts, ["json"] 
+    plug :fetch_session
+    plug :fetch_flash
+  end
+
   scope "/", App do
     pipe_through :browser
 
@@ -47,4 +53,16 @@ defmodule App.Router do
 
     get "/hashtag/:name", TagController, :show
   end
+
+  scope "/api", App do
+    pipe_through :api 
+    #get "/", APIPageController, :index
+    get  "/signup", APISignupController, :index
+    #resources "/todos", TodoController, only: [:index]
+    get  "/search", APISearchController, :index 
+
+    get "/tweets", APITweetController, :index
+  end
 end
+
+
