@@ -17,11 +17,11 @@ defmodule App.APISignupController do
           {:ok, user} ->
             conn
             |> User.put_current_user(user)
-            |> put_flash(:info, gettext "Successfully created user account")
+            #|> put_flash(:info, gettext "Successfully created user account")
             #|> redirect(to: user_path(conn, :show, user))
-            render(conn, "index.json", status: %{status: 0})
+            render(conn, "index.json", status: %{status: "signup successful"})
           {:error, changeset} ->
-            render conn, "index.json", status: %{status: 1}
+            render conn, "index.json", status: %{status: "signup failed"}
         end
     end
   

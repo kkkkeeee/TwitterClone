@@ -13,9 +13,9 @@ defmodule App.APIFollowerController do
         case Repo.insert Follower.changeset(follower, %{}) do
           {:ok, _follower} ->
             #redirect conn, to: user_following_path(conn, :index, current_user.id)
-            render loginconn, App.APIErrorView, "index.json", status: %{status: 30}
+            render loginconn, App.APIErrorView, "index.json", status: %{status: "Successfully followed this user"}
           {:error, _changeset} ->
-            render loginconn, App.APIErrorView, "index.json", status: %{status: 31}
+            render loginconn, App.APIErrorView, "index.json", status: %{status: "Unable to follow this user"}
         end
     end
 

@@ -17,7 +17,7 @@ defmodule App.APITweetController do
 
             :error ->
               conn
-              |> render(App.APIErrorView, "index.json", status: %{status: 11})
+              |> render(App.APIErrorView, "index.json", status: %{status: "user login failed"})
         end
     end
 
@@ -43,11 +43,11 @@ defmodule App.APITweetController do
               {:ok, tweet} ->
                 create_taggings(tweet)
               {:error, tweet_changeset} ->
-                render loginconn, App.APIErrorView, "index.json", status: %{status: 11}
+                render loginconn, App.APIErrorView, "index.json", status: %{status: "#{params["tweet"]} is posted failed"}
             end
           end
           if state == :ok do
-            render(loginconn, "index.json", status: %{status: 10})
+            render(loginconn, "index.json", status: %{status: "#{params["tweet"]} is successfully posted"})
           end     
     end
 
