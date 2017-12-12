@@ -62,6 +62,8 @@ defmodule App.Router do
     get  "/search", APISearchController, :index 
 
     get "/tweets", APITweetController, :index
+    get "/retweet", APIRetweetController, :index
+    get "/followers", APIFollowerController, :index
   end
 end
 

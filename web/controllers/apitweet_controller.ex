@@ -6,20 +6,18 @@ defmodule App.APITweetController do
     alias App.Tagging
     alias App.Tweet
     alias App.User
-    plug App.LoginRequired when action in [:create, :delete]
-    plug App.SetUser when action in [:index]
+    #import App.SetUser
+    #plug App.LoginRequired when action in [:index, :delete]
+    #plug App.SetUser when action in [:index]
     defp login(conn, login, password) do
         case authenticate login, password do
             {:ok, user} ->
               conn
               |> User.put_current_user(user)
-              #|> put_flash(:info, gettext "Successfully logged in.")
-              #|> redirect(to: user_path(conn, :show, user))
 
             :error ->
               conn
-              |> put_flash(:error, gettext "Unknown login or wrong password")
-              |> render("index.html")
+              |> render(App.APIErrorView, "index.json", status: %{status: 11})
         end
     end
 
@@ -39,10 +37,6 @@ defmodule App.APITweetController do
     def index(conn, %{"login"=> login, "password" => password, "tweet" => tweet} = params) do
         loginconn = login(conn, params["login"], params["password"])
         current_user = loginconn.assigns[:current_user]
-        user = loginconn.assigns[:user]
-        IO.puts "ssssssssssssssssssssssssss #{current_user.id}"        
-        if user.id === current_user.id do
-          IO.puts "aaaaaaaaaaaaaaaaaaaaaaaaaaa"
           {state, _} = Repo.transaction fn ->
             tweet_changeset = Tweet.changeset %Tweet{user_id: current_user.id}, %{"text" => params["tweet"]}
             case Repo.insert tweet_changeset do
@@ -54,12 +48,7 @@ defmodule App.APITweetController do
           end
           if state == :ok do
             render(loginconn, "index.json", status: %{status: 10})
-          end
-        else
-            IO.puts "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"            
-          render loginconn, App.APIErrorView, "notlogin.json", status: %{status: 12}
-        end
-      
+          end     
     end
 
     defp create_taggings(tweet) do
