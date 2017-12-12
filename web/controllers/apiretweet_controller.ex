@@ -16,12 +16,16 @@ defmodule App.APIRetweetController do
         #|> put_flash(:error, gettext "You are not allowed to retweet your own tweets")
         #|> redirect(to: user_path(conn, :show, current_user.id))
         #|> halt
-        render loginconn, App.APIErrorView, "index.json", status: %{status: 21}
+        render loginconn, App.APIErrorView, "index.json", status: %{status: "You are not allowed to retweet your own tweets"}
       else
         retweet_param = %{tweet_id: tweet.id, user_id: current_user.id}
         changeset = Retweet.changeset(%Retweet{}, retweet_param)
-        Repo.insert! changeset
-        render loginconn, App.APIErrorView, "index.json", status: %{status: 20}
+        try do 
+          Repo.insert! changeset
+          render loginconn, App.APIErrorView, "index.json", status: %{status: "Successfully retweeted"}
+        rescue
+          Ecto.InvalidChangesetError -> render loginconn, App.APIErrorView, "index.json", status: %{status: "retweets pair has already been taken"}
+        end       
       end
     end
 
